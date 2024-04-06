@@ -1,26 +1,45 @@
 package com.ocado.basket.model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 public class Supplier {
     private final String name;
-    private final List<String> products;
+    private final List<Product> products = new ArrayList<>();
 
-    public Supplier(String name, List<String> products) {
+    public Supplier(String name) {
         this.name = name;
-        this.products = products;
     }
 
     public String getName() {
         return name;
     }
 
-    public List<String> getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void deleteProduct(String productName) {
-        products.remove(productName);
+    public void deleteProduct(Product product) {
+        products.remove(product);
     }
 
+    public void addProduct(Product product) {
+        if (!products.contains(product)) {
+            products.add(product);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Supplier supplier = (Supplier) o;
+        return name.equals(supplier.name);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(name);
+    }
 }
