@@ -56,11 +56,39 @@ public class BasketSplitter {
             }
         }
 
+        int pointerToSupplier = 0;
 
+        while (basket.getProductsHaveSupplier() != items.size()) {
+            basket.getSuppliers().sort(Comparator.comparingInt((Supplier o) -> o.getProducts().size()).reversed());
+            Supplier supplier = basket.getSuppliers().get(pointerToSupplier);
 
+            for (Product product : supplier.getProducts()) {
+                for (Supplier supplierToChange : basket.getSuppliers()) {
+                    if (!supplierToChange.equals(supplier)) {
+                        supplierToChange.deleteProduct(product);
+                    }
+                }
+                basket.assignProduct();
+            }
 
+            pointerToSupplier += 1;
+        }
 
-        return null;
+        return basket.getResult();
+    }
+
+    public static void printSplit(Map<String, List<String>> result) {
+        for (Map.Entry<String, List<String>> entry : result.entrySet()) {
+            String deliveryMethod = entry.getKey();
+            List<String> products = entry.getValue();
+
+            System.out.println("Delivery Method: " + deliveryMethod);
+            System.out.println("Products:");
+
+            for (String product : products) {
+                System.out.println("- " + product);
+            }
+        }
     }
 
     public Map<String, List<String>> getDeliveryOptionsForProducts() {
@@ -76,8 +104,19 @@ public class BasketSplitter {
         BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
         Map<String, List<String>> deliveryOptionTest = basketSplitter.getDeliveryOptionsForProducts();
         Set<String> deliveryOptionsAllTest = basketSplitter.getAllDeliveryOptions();
-        List<String> items = Arrays.asList("Cocoa Butter","Tart - Raisin And Pecan",
-                "Table Cloth 54x72 White");
-        basketSplitter.split(items);
+        List<String> items = Arrays.asList(
+                "Fond - Chocolate",
+                "Chocolate - Unsweetened",
+                "Nut - Almond, Blanched, Whole",
+                "Haggis",
+                "Mushroom - Porcini Frozen",
+                "Cake - Miini Cheesecake Cherry",
+                "Sauce - Mint",
+                "Longan"
+        );
+        Map<String, List<String>> result = basketSplitter.split(items);
+        printSplit(result);
+
+
     }
 }

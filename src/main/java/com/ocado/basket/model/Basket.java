@@ -1,14 +1,31 @@
 package com.ocado.basket.model;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 public class Basket {
+    private int productsHaveSupplier = 0;
     List<Product> products = new ArrayList<>();
     List<Supplier> suppliers = new ArrayList<>();
     public Basket() {
     }
+
+    public List<Product> getProducts() {
+        return products;
+    }
+
+    public List<Supplier> getSuppliers() {
+        return suppliers;
+    }
+
+    public void assignProduct() {
+        productsHaveSupplier += 1;
+    }
+
+    public int getProductsHaveSupplier() {
+        return productsHaveSupplier;
+    }
+
+
+
 
     public void addProductToBasket(String productName) {
         Product product = new Product(productName);
@@ -53,11 +70,20 @@ public class Basket {
         }
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Map<String, List<String>> getResult() {
+        Map<String, List<String>> result = new HashMap<>();
+
+        for (Supplier supplier : suppliers) {
+            if (supplier.getProducts().size() > 0) {
+                result.put(supplier.getName(), supplier.getProducts()
+                        .stream()
+                        .map(Product::getName)
+                        .toList());
+            }
+        }
+
+        return result;
     }
 
-    public List<Supplier> getSuppliers() {
-        return suppliers;
-    }
+
 }
