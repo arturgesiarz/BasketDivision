@@ -9,9 +9,11 @@ import org.json.simple.parser.ParseException;
 
 public class BasketSplitter {
     private final Map<String, List<String>> deliveryOptionsForProducts = new HashMap<>();
+    private final Set<String> allDeliveryOptions = new HashSet<>();
 
     public BasketSplitter(String absolutePathToConfigFile) {
         setDeliveryOptions(absolutePathToConfigFile);
+        findAllDeliveryOptions();
     }
 
     private void setDeliveryOptions(String absolutePathToConfigFile) {
@@ -33,7 +35,14 @@ public class BasketSplitter {
         }
     }
 
+    private void findAllDeliveryOptions() {
+        deliveryOptionsForProducts.values().forEach(allDeliveryOptions::addAll);
+    }
+
+
     public Map<String, List<String>> split(List<String> items) {
+
+
         return null;
     }
 
@@ -41,10 +50,17 @@ public class BasketSplitter {
         return Collections.unmodifiableMap(deliveryOptionsForProducts);
     }
 
+    public Set<String> getAllDeliveryOptions() {
+        return Collections.unmodifiableSet(allDeliveryOptions);
+    }
+
     public static void main(String[] args) {
         String absolutPathTOConfigFile = "/Users/arturgesiarz/IdeaProjects/Java/BasketDivision/src/main/resources/config.json";
         BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
         Map<String, List<String>> deliveryOptionTest = basketSplitter.getDeliveryOptionsForProducts();
-        deliveryOptionTest.get("Bread - Crumbs, Bulk").forEach(System.out::println);
+        Set<String> deliveryOptionsAllTest = basketSplitter.getAllDeliveryOptions();
+        List<String> items = Arrays.asList("Cocoa Butter","Tart - Raisin And Pecan",
+                "Table Cloth 54x72 White");
+        basketSplitter.split(items);
     }
 }
