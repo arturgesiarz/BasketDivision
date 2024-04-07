@@ -3,6 +3,7 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.ocado.basket.model.Basket;
+import com.ocado.basket.model.util.ConsoleDisplay;
 import com.ocado.basket.model.util.DeliveryHandler;
 
 public class BasketSplitter {
@@ -23,7 +24,6 @@ public class BasketSplitter {
         Map<String, List<String>> result = Basket.getResult();
 
         Basket.resetState();
-        DeliveryHandler.resetState();
 
         return result;
     }

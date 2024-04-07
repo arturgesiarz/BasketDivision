@@ -5,6 +5,7 @@ import java.util.Map;
 
 public class ConsoleDisplay {
     public static void printSplit (Map<String, List<String>> result) {
+        System.out.println("--------START------");
         for (Map.Entry<String, List<String>> entry : result.entrySet()) {
             System.out.println("--------------");
             System.out.println("Delivery name: " + entry.getKey());
@@ -14,5 +15,6 @@ public class ConsoleDisplay {
             }
 
         }
+        System.out.println("--------END------");
     }
 }
