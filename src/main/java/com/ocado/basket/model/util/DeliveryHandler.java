@@ -32,4 +32,7 @@ public class DeliveryHandler {
         }
         return 1;
     }
+    static public void resetState() {
+        deliveryOptionsForProducts = new HashMap<>();
+    }
 }

@@ -24,6 +24,7 @@ public class BasketSplitter {
         Map<String, List<String>> result = Basket.getResult();
 
         Basket.resetState();
+        DeliveryHandler.resetState();
 
         return result;
     }
@@ -33,22 +34,8 @@ public class BasketSplitter {
         BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
         List<String> items2 = Arrays.asList(
                 "Fond - Chocolate",
-                "Chocolate - Unsweetened",
-                "Nut - Almond, Blanched, Whole",
-                "Haggis",
-                "Mushroom - Porcini Frozen",
-                "Cake - Miini Cheesecake Cherry",
-                "Sauce - Mint",
-                "Longan",
-                "Bag Clear 10 Lb",
-                "Nantucket - Pomegranate Pear",
-                "Puree - Strawberry",
-                "Numi - Assorted Teas",
-                "Apples - Spartan",
-                "Garlic - Peeled",
-                "Cabbage - Nappa",
-                "Bagel - Whole White Sesame",
-                "Tea - Apple Green Tea"
+                "Sugar - Cubes",
+                "Wine - Sherry Dry Sack, William"
         );
 
         // Timer

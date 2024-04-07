@@ -11,6 +11,10 @@ public class Basket {
     private static Map<String, Integer> productsMap = new HashMap<>();
     private static Map<String, Integer> deliveryMap = new HashMap<>();
 
+    public static List<Product> getProducts() {
+        return products;
+    }
+
     public static void startCalculatingTheBestSplit(List<String> items) {
         int pointerToSupplier = 0;
         while (getProductsHaveSupplier() != items.size()) {
@@ -110,6 +114,12 @@ public class Basket {
                 addProductForSupplier(supplierName, productName);
             }
         }
+//        suppliers.forEach(supplier -> {
+//            List<String> result = supplier.getProducts().stream().map(Product::name).toList();
+//            System.out.println(result);
+//        });
+
+
     }
 
     static public void createAllIndexForProductsForSuppliers() {
