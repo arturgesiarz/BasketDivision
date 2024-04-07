@@ -1,4 +1,5 @@
 package com.ocado.basket;
+import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.ocado.basket.model.Basket;
@@ -7,7 +8,7 @@ import com.ocado.basket.model.util.DeliveryHandler;
 
 public class BasketSplitter {
 
-    public BasketSplitter(String absolutePathToConfigFile) {
+    public BasketSplitter(String absolutePathToConfigFile) throws FileNotFoundException {
         DeliveryHandler.setDeliveryOptions(absolutePathToConfigFile);
     }
 
@@ -23,9 +24,8 @@ public class BasketSplitter {
         return Basket.getResult();
     }
 
-    public static void main(String[] args) {
-
-        String absolutPathTOConfigFile = "/Users/arturgesiarz/IdeaProjects/Java/BasketDivision/src/main/resources/config.json";
+    public static void main(String[] args) throws FileNotFoundException {
+        String absolutPathTOConfigFile = "src/main/resources/config.jso";
         BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
         List<String> items2 = Arrays.asList(
                 "Fond - Chocolate",

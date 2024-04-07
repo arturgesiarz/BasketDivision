@@ -32,7 +32,6 @@ public class Basket {
         }
     }
 
-
     public static List<Supplier> getSuppliers() {
         return suppliers;
     }
@@ -120,17 +119,16 @@ public class Basket {
     static public Map<String, List<String>> getResult() {
         Map<String, List<String>> result = new HashMap<>();
 
-        for (Supplier supplier : suppliers) {
-            if (supplier.getActProductsNumber() > 0) {
-                List<String> productNameList = new ArrayList<>();
-                for (Product product : supplier.getProducts()) {
-                    if (product != null) {
-                        productNameList.add(product.name());
-                    }
-                }
-                result.put(supplier.getName(), productNameList);
-            }
-        }
+        suppliers.stream()
+                .filter(supplier -> supplier.getActProductsNumber() > 0)
+                .forEach(supplier -> {
+                    List<String> productNameList = new ArrayList<>();
+                    supplier.getProducts().stream()
+                            .filter(Objects::nonNull)
+                            .map(Product::name)
+                            .forEach(productNameList::add);
+                    result.put(supplier.getName(),productNameList);
+                });
 
         return result;
     }
