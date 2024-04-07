@@ -116,6 +116,6 @@ public class BasketSplitter {
 
         basketSplitter.printSplit(result);
 
-
+        System.out.println("Time: " + duration + " ms");
     }
 }
