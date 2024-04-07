@@ -106,7 +106,7 @@ public class BasketSplitter {
                 "Sauce - Mint"
         );
 
-        // mierzenie czasu
+        // Timer
         long startTime = System.currentTimeMillis();
 
         Map<String, List<String>> result = basketSplitter.split(items);
