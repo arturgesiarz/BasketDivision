@@ -114,12 +114,6 @@ public class Basket {
                 addProductForSupplier(supplierName, productName);
             }
         }
-//        suppliers.forEach(supplier -> {
-//            List<String> result = supplier.getProducts().stream().map(Product::name).toList();
-//            System.out.println(result);
-//        });
-
-
     }
 
     static public void createAllIndexForProductsForSuppliers() {
