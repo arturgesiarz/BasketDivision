@@ -2,8 +2,7 @@ package com.ocado.basket;
 import java.util.*;
 
 import com.ocado.basket.model.Basket;
-import com.ocado.basket.model.Product;
-import com.ocado.basket.model.Supplier;
+import com.ocado.basket.model.util.ConsoleDisplay;
 import com.ocado.basket.model.util.DeliveryHandler;
 
 public class BasketSplitter {
@@ -14,42 +13,14 @@ public class BasketSplitter {
 
     public Map<String, List<String>> split(List<String> items) {
 
-        Basket basket = new Basket(items, DeliveryHandler.deliveryOptionsForProducts);
+        Basket.createIndexForProductsAndSupplierMap(items);
+        Basket.createProductsList();
+        Basket.createSuppliersList();
+        Basket.assignProductsForSupplier(items);
+        Basket.createAllIndexForProductsForSuppliers();
+        Basket.startCalculatingTheBestSplit(items);
 
-        int pointerToSupplier = 0;
-
-        while (basket.getProductsHaveSupplier() != items.size()) {
-
-            basket.getSuppliers().sort(Comparator.comparingInt(Supplier::getActProductsNumber).reversed());
-            Supplier supplier = basket.getSuppliers().get(pointerToSupplier);
-
-            for (Product product : supplier.getProducts()) {
-                if (product != null) {
-                    for (Supplier supplierToChange : basket.getSuppliers()) {
-                        if (!supplierToChange.equals(supplier)) {
-                            supplierToChange.deleteProduct(product);
-                        }
-                    }
-                    basket.assignProduct();
-                }
-            }
-            pointerToSupplier += 1;
-        }
-
-        return basket.getResult();
-    }
-
-
-    public void printSplit (Map<String, List<String>> result) {
-        for (Map.Entry<String, List<String>> entry : result.entrySet()) {
-            System.out.println("--------------");
-            System.out.println("Delivery name: " + entry.getKey());
-            System.out.println("Products: ");
-            for (String product : entry.getValue()) {
-                System.out.println(product);
-            }
-
-        }
+        return Basket.getResult();
     }
 
     public static void main(String[] args) {
@@ -85,5 +56,7 @@ public class BasketSplitter {
         long duration = endTime - startTime;
 
         System.out.println("Time: " + duration + " ms");
+
+        ConsoleDisplay.printSplit(result);
     }
 }

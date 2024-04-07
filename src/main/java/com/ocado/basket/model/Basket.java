@@ -1,43 +1,51 @@
 package com.ocado.basket.model;
+import com.ocado.basket.model.util.DeliveryHandler;
+
 import java.util.*;
 import java.util.stream.IntStream;
 
 public class Basket {
-    private int productsHaveSupplier = 0;
-    private final List<Product> products = new ArrayList<>();
-    private final List<Supplier> suppliers = new ArrayList<>();
-    private final Map<String, Integer> productsMap = new HashMap<>();
-    private final Map<String, Integer> deliveryMap = new HashMap<>();
+    private static int productsHaveSupplier = 0;
+    private final static List<Product> products = new ArrayList<>();
+    private final static List<Supplier> suppliers = new ArrayList<>();
+    private final static Map<String, Integer> productsMap = new HashMap<>();
+    private final static Map<String, Integer> deliveryMap = new HashMap<>();
 
-    public Basket(List<String> items, Map<String,
-            List<String>> deliveryOptionsForProducts) {
+    public static void startCalculatingTheBestSplit(List<String> items) {
+        int pointerToSupplier = 0;
+        while (getProductsHaveSupplier() != items.size()) {
 
-        createIndexForProductsAndSupplierMap(items, deliveryOptionsForProducts);
-        createProductsList();
-        createSuppliersList();
-        assignProductsForSupplier(items, deliveryOptionsForProducts);
-        createAllIndexForProductsForSuppliers();
+            getSuppliers().sort(Comparator.comparingInt(Supplier::getActProductsNumber).reversed());
+            Supplier supplier = getSuppliers().get(pointerToSupplier);
 
+            for (Product product : supplier.getProducts()) {
+                if (product != null) {
+                    for (Supplier supplierToChange : getSuppliers()) {
+                        if (!supplierToChange.equals(supplier)) {
+                            supplierToChange.deleteProduct(product);
+                        }
+                    }
+                    assignProduct();
+                }
+            }
+            pointerToSupplier += 1;
+        }
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
 
-    public List<Supplier> getSuppliers() {
+    public static List<Supplier> getSuppliers() {
         return suppliers;
     }
 
-    public void assignProduct() {
+    public static void assignProduct() {
         productsHaveSupplier += 1;
     }
 
-    public int getProductsHaveSupplier() {
+    public static int getProductsHaveSupplier() {
         return productsHaveSupplier;
     }
 
-    private void createIndexForProductsAndSupplierMap(List<String> items, Map<String,
-            List<String>> deliveryOptionsForProducts) {
+    public static void createIndexForProductsAndSupplierMap(List<String> items) {
         int productMapIterator = 0;
         int deliveryMapIterator = 0;
 
@@ -47,7 +55,7 @@ public class Basket {
                 productMapIterator += 1;
             }
 
-            for (String deliveryName : deliveryOptionsForProducts.get(productName)) {
+            for (String deliveryName : DeliveryHandler.deliveryOptionsForProducts.get(productName)) {
                 if (!deliveryMap.containsKey(deliveryName)) {
                     deliveryMap.put(deliveryName, deliveryMapIterator);
                     deliveryMapIterator += 1;
@@ -56,7 +64,7 @@ public class Basket {
         }
     }
 
-    private void createProductsList() {
+    public static void createProductsList() {
         IntStream.range(0, productsMap.size()).forEach(i -> products.add(null));
 
         productsMap.forEach((key, value) -> {
@@ -66,7 +74,7 @@ public class Basket {
         });
     }
 
-    private void createSuppliersList() {
+    public static void createSuppliersList() {
         IntStream.range(0, deliveryMap.size()).forEach(i -> suppliers.add(null));
 
         deliveryMap.forEach((key, value) -> {
@@ -76,18 +84,18 @@ public class Basket {
         });
     }
 
-    public Optional<Product> getProduct(String productName) {
+    static public Optional<Product> getProduct(String productName) {
         Optional<Integer> productIndex = Optional.of(productsMap.get(productName));
         return productIndex.map(products::get);
     }
 
 
-    public Optional<Supplier> getSupplier(String supplierName) {
+    static public Optional<Supplier> getSupplier(String supplierName) {
         Optional<Integer> supplierIndex = Optional.of(deliveryMap.get(supplierName));
         return supplierIndex.map(suppliers::get);
     }
 
-    private void addProductForSupplier(String supplierName, String productName) {
+    private static void addProductForSupplier(String supplierName, String productName) {
         Optional<Supplier> supplier = getSupplier(supplierName);
         Optional<Product> product = getProduct(productName);
 
@@ -96,21 +104,20 @@ public class Basket {
         }
     }
 
-    private void assignProductsForSupplier(List<String> items, Map<String,
-            List<String>> deliveryOptionsForProducts) {
+    public static void assignProductsForSupplier(List<String> items) {
 
         for (String productName : items) {
-            for (String supplierName : deliveryOptionsForProducts.get(productName)) {
+            for (String supplierName : DeliveryHandler.deliveryOptionsForProducts.get(productName)) {
                 addProductForSupplier(supplierName, productName);
             }
         }
     }
 
-    private void createAllIndexForProductsForSuppliers() {
+    static public void createAllIndexForProductsForSuppliers() {
         suppliers.forEach(Supplier::createIndexForProducts);
     }
 
-    public Map<String, List<String>> getResult() {
+    static public Map<String, List<String>> getResult() {
         Map<String, List<String>> result = new HashMap<>();
 
         for (Supplier supplier : suppliers) {
