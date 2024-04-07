@@ -96,7 +96,26 @@ public class BasketSplitter {
         BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
         Map<String, List<String>> deliveryOptionTest = basketSplitter.getDeliveryOptionsForProducts();
         Set<String> deliveryOptionsAllTest = basketSplitter.getAllDeliveryOptions();
-        List<String> items = Arrays.asList(
+        List<String> items2 = Arrays.asList(
+                "Fond - Chocolate",
+                "Chocolate - Unsweetened",
+                "Nut - Almond, Blanched, Whole",
+                "Haggis",
+                "Mushroom - Porcini Frozen",
+                "Cake - Miini Cheesecake Cherry",
+                "Sauce - Mint",
+                "Longan",
+                "Bag Clear 10 Lb",
+                "Nantucket - Pomegranate Pear",
+                "Puree - Strawberry",
+                "Numi - Assorted Teas",
+                "Apples - Spartan",
+                "Garlic - Peeled",
+                "Cabbage - Nappa",
+                "Bagel - Whole White Sesame",
+                "Tea - Apple Green Tea"
+        );
+        List<String> items3 = Arrays.asList(
                 "Cookies Oatmeal Raisin",
                 "Cheese Cloth",
                 "English Muffin",
@@ -202,12 +221,10 @@ public class BasketSplitter {
         // Timer
         long startTime = System.currentTimeMillis();
 
-        Map<String, List<String>> result = basketSplitter.split(items);
+        Map<String, List<String>> result = basketSplitter.split(items2);
 
         long endTime = System.currentTimeMillis();
         long duration = endTime - startTime;
-
-        basketSplitter.printSplit(result);
 
         System.out.println("Time: " + duration + " ms");
     }
