@@ -3,7 +3,6 @@ import java.io.FileNotFoundException;
 import java.util.*;
 
 import com.ocado.basket.model.Basket;
-import com.ocado.basket.model.util.ConsoleDisplay;
 import com.ocado.basket.model.util.DeliveryHandler;
 
 public class BasketSplitter {
@@ -27,27 +26,5 @@ public class BasketSplitter {
         DeliveryHandler.resetState();
 
         return result;
-    }
-
-    public static void main(String[] args) throws FileNotFoundException {
-        String absolutPathTOConfigFile = "src/main/resources/config.json";
-        BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
-        List<String> items2 = Arrays.asList(
-                "Fond - Chocolate",
-                "Sugar - Cubes",
-                "Wine - Sherry Dry Sack, William"
-        );
-
-        // Timer
-        long startTime = System.currentTimeMillis();
-
-        Map<String, List<String>> result = basketSplitter.split(items2);
-
-        long endTime = System.currentTimeMillis();
-        long duration = endTime - startTime;
-
-        System.out.println("Time: " + duration + " ms");
-
-        ConsoleDisplay.printSplit(result);
     }
 }
