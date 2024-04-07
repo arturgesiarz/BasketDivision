@@ -6,10 +6,10 @@ import java.util.stream.IntStream;
 
 public class Basket {
     private static int productsHaveSupplier = 0;
-    private final static List<Product> products = new ArrayList<>();
-    private final static List<Supplier> suppliers = new ArrayList<>();
-    private final static Map<String, Integer> productsMap = new HashMap<>();
-    private final static Map<String, Integer> deliveryMap = new HashMap<>();
+    private static List<Product> products = new ArrayList<>();
+    private static List<Supplier> suppliers = new ArrayList<>();
+    private static Map<String, Integer> productsMap = new HashMap<>();
+    private static Map<String, Integer> deliveryMap = new HashMap<>();
 
     public static void startCalculatingTheBestSplit(List<String> items) {
         int pointerToSupplier = 0;
@@ -131,6 +131,14 @@ public class Basket {
                 });
 
         return result;
+    }
+
+    static public void resetState() {
+        productsHaveSupplier = 0;
+        products = new ArrayList<>();
+        suppliers = new ArrayList<>();
+        productsMap = new HashMap<>();
+        deliveryMap = new HashMap<>();
     }
 
 
