@@ -13,6 +13,7 @@ import org.json.simple.parser.ParseException;
 public class BasketSplitter {
     private final Map<String, List<String>> deliveryOptionsForProducts = new HashMap<>();
     private final Set<String> allDeliveryOptions = new HashSet<>();
+    private Basket basket = new Basket();
 
     public BasketSplitter(String absolutePathToConfigFile) {
         setDeliveryOptions(absolutePathToConfigFile);
@@ -45,8 +46,6 @@ public class BasketSplitter {
 
     public Map<String, List<String>> split(List<String> items) {
 
-        Basket basket = new Basket();
-
         for (String item : items) {
             basket.addProductToBasket(item);
 
@@ -77,12 +76,13 @@ public class BasketSplitter {
         return basket.getResult();
     }
 
-    public static void printSplit(Map<String, List<String>> result) {
+    public void printSplit(Map<String, List<String>> result) {
         for (Map.Entry<String, List<String>> entry : result.entrySet()) {
             String deliveryMethod = entry.getKey();
             List<String> products = entry.getValue();
 
             System.out.println("Delivery Method: " + deliveryMethod);
+            System.out.println("Delivery max products: " + basket.getSupplier(deliveryMethod).get().getMaxProducts());
             System.out.println("Products:");
 
             for (String product : products) {
@@ -112,10 +112,19 @@ public class BasketSplitter {
                 "Mushroom - Porcini Frozen",
                 "Cake - Miini Cheesecake Cherry",
                 "Sauce - Mint",
-                "Longan"
+                "Longan",
+                "Bag Clear 10 Lb",
+                "Nantucket - Pomegranate Pear",
+                "Puree - Strawberry",
+                "Numi - Assorted Teas",
+                "Apples - Spartan",
+                "Garlic - Peeled",
+                "Cabbage - Nappa",
+                "Bagel - Whole White Sesame",
+                "Tea - Apple Green Tea"
         );
         Map<String, List<String>> result = basketSplitter.split(items);
-        printSplit(result);
+        basketSplitter.printSplit(result);
 
 
     }

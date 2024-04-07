@@ -7,7 +7,7 @@ import java.util.Objects;
 public class Supplier {
     private final String name;
     private final List<Product> products = new ArrayList<>();
-    private int maxProducts;
+    private int maxProducts = 0;
 
     public Supplier(String name) {
         this.name = name;
@@ -29,14 +29,11 @@ public class Supplier {
         if (!products.contains(product)) {
             products.add(product);
         }
+        maxProducts = Math.max(maxProducts, products.size());
     }
 
     public int getMaxProducts() {
         return maxProducts;
-    }
-
-    public void setMaxProducts(int maxProducts) {
-        this.maxProducts = maxProducts;
     }
 
     @Override
