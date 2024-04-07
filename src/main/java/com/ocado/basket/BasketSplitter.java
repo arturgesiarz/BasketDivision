@@ -13,7 +13,6 @@ import org.json.simple.parser.ParseException;
 public class BasketSplitter {
     private final Map<String, List<String>> deliveryOptionsForProducts = new HashMap<>();
     private final Set<String> allDeliveryOptions = new HashSet<>();
-    private Basket basket = new Basket();
 
     public BasketSplitter(String absolutePathToConfigFile) {
         setDeliveryOptions(absolutePathToConfigFile);
@@ -46,49 +45,29 @@ public class BasketSplitter {
 
     public Map<String, List<String>> split(List<String> items) {
 
-        for (String item : items) {
-            basket.addProductToBasket(item);
-
-            for (String deliveryName : deliveryOptionsForProducts.get(item)) {
-                basket.addSupplier(deliveryName);
-                basket.addProductForSupplier(deliveryName, item);
-            }
-        }
+        Basket basket = new Basket(items, deliveryOptionsForProducts);
 
         int pointerToSupplier = 0;
 
         while (basket.getProductsHaveSupplier() != items.size()) {
-            basket.getSuppliers().sort(Comparator.comparingInt((Supplier o) -> o.getProducts().size()).reversed());
+
+            basket.getSuppliers().sort(Comparator.comparingInt(Supplier::getActProductsNumber).reversed());
             Supplier supplier = basket.getSuppliers().get(pointerToSupplier);
 
             for (Product product : supplier.getProducts()) {
-                for (Supplier supplierToChange : basket.getSuppliers()) {
-                    if (!supplierToChange.equals(supplier)) {
-                        supplierToChange.deleteProduct(product);
+                if (product != null) {
+                    for (Supplier supplierToChange : basket.getSuppliers()) {
+                        if (!supplierToChange.equals(supplier)) {
+                            supplierToChange.deleteProduct(product);
+                        }
                     }
+                    basket.assignProduct();
                 }
-                basket.assignProduct();
             }
-
             pointerToSupplier += 1;
         }
 
         return basket.getResult();
-    }
-
-    public void printSplit(Map<String, List<String>> result) {
-        for (Map.Entry<String, List<String>> entry : result.entrySet()) {
-            String deliveryMethod = entry.getKey();
-            List<String> products = entry.getValue();
-
-            System.out.println("Delivery Method: " + deliveryMethod);
-            System.out.println("Delivery max products: " + basket.getSupplier(deliveryMethod).get().getMaxProducts());
-            System.out.println("Products:");
-
-            for (String product : products) {
-                System.out.println("- " + product);
-            }
-        }
     }
 
     public Map<String, List<String>> getDeliveryOptionsForProducts() {
@@ -99,7 +78,20 @@ public class BasketSplitter {
         return Collections.unmodifiableSet(allDeliveryOptions);
     }
 
+    public void printSplit (Map<String, List<String>> result) {
+        for (Map.Entry<String, List<String>> entry : result.entrySet()) {
+            System.out.println("--------------");
+            System.out.println("Delivery name: " + entry.getKey());
+            System.out.println("Products: ");
+            for (String product : entry.getValue()) {
+                System.out.println(product);
+            }
+
+        }
+    }
+
     public static void main(String[] args) {
+
         String absolutPathTOConfigFile = "/Users/arturgesiarz/IdeaProjects/Java/BasketDivision/src/main/resources/config.json";
         BasketSplitter basketSplitter = new BasketSplitter(absolutPathTOConfigFile);
         Map<String, List<String>> deliveryOptionTest = basketSplitter.getDeliveryOptionsForProducts();
@@ -111,19 +103,17 @@ public class BasketSplitter {
                 "Haggis",
                 "Mushroom - Porcini Frozen",
                 "Cake - Miini Cheesecake Cherry",
-                "Sauce - Mint",
-                "Longan",
-                "Bag Clear 10 Lb",
-                "Nantucket - Pomegranate Pear",
-                "Puree - Strawberry",
-                "Numi - Assorted Teas",
-                "Apples - Spartan",
-                "Garlic - Peeled",
-                "Cabbage - Nappa",
-                "Bagel - Whole White Sesame",
-                "Tea - Apple Green Tea"
+                "Sauce - Mint"
         );
+
+        // mierzenie czasu
+        long startTime = System.currentTimeMillis();
+
         Map<String, List<String>> result = basketSplitter.split(items);
+
+        long endTime = System.currentTimeMillis();
+        long duration = endTime - startTime;
+
         basketSplitter.printSplit(result);
 
 

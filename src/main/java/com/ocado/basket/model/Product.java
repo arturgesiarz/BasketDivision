@@ -25,9 +25,7 @@ public class Product {
     }
 
     public void addPossibleSupplier(Supplier supplier) {
-        if (!possibleSupplier.contains(supplier)) {
-            possibleSupplier.add(supplier);
-        }
+        possibleSupplier.add(supplier);
     }
     public List<Supplier> getPossibleSupplier() {
         return possibleSupplier;
