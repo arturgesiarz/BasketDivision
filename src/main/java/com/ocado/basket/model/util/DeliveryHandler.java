@@ -13,7 +13,7 @@ import java.util.Map;
 
 public class DeliveryHandler {
     public static Map<String, List<String>> deliveryOptionsForProducts = new HashMap<>();
-    public static void setDeliveryOptions(String absolutePathToConfigFile) throws FileNotFoundException {
+    public static int setDeliveryOptions(String absolutePathToConfigFile) throws FileNotFoundException {
         JSONParser parser = new JSONParser();
 
         try (FileReader reader = new FileReader(absolutePathToConfigFile)){
@@ -30,5 +30,6 @@ public class DeliveryHandler {
         } catch (IOException | ParseException e) {
             throw new FileNotFoundException("Configuration file not found: " + absolutePathToConfigFile);
         }
+        return 1;
     }
 }
