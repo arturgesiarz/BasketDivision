@@ -64,7 +64,7 @@ public class BasketSplitterTest {
         Map<String, List<String>> result = basketSplitter.split(items);
 
         //then
-        assertEquals(3, result.size());  // size
+        assertEquals(3, result.size());
         assertTrue(result.keySet().containsAll(correctCouriers));
 
     }
@@ -93,7 +93,7 @@ public class BasketSplitterTest {
         Map<String, List<String>> result = basketSplitter.split(items);
 
         //then
-        assertEquals(2, result.size());  // size
+        assertEquals(2, result.size());
         assertTrue(result.keySet().containsAll(correctCouriers));
 
     }
@@ -120,7 +120,7 @@ public class BasketSplitterTest {
         Map<String, List<String>> result = basketSplitter.split(items);
 
         //then
-        assertEquals(1, result.size());  // size
+        assertEquals(1, result.size());
         assertTrue(result.keySet().containsAll(correctCouriers));
 
     }
@@ -162,7 +162,7 @@ public class BasketSplitterTest {
         Map<String, List<String>> result = basketSplitter.split(items);
 
         //then
-        assertEquals(2, result.size());  // size
+        assertEquals(2, result.size());
         assertTrue(result.keySet().containsAll(correctCouriers));
 
         assertTrue(result.get("Courier").containsAll(correctProducts.get(0)));
@@ -230,7 +230,7 @@ public class BasketSplitterTest {
         Map<String, List<String>> result = basketSplitter.split(items);
 
         //then
-        assertEquals(3, result.size());  // size
+        assertEquals(3, result.size());
         assertTrue(result.keySet().containsAll(correctCouriers));
 
         assertTrue(result.get("Same day delivery").containsAll(correctProducts.get(0)));
