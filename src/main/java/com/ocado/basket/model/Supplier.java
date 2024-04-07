@@ -26,7 +26,7 @@ public class Supplier {
     }
 
     public Optional<Integer> getProductIndex(Product product) {
-        return Optional.ofNullable(productsMap.get(product.getName()));
+        return Optional.ofNullable(productsMap.get(product.name()));
     }
 
     public void deleteProduct(Product product) {
@@ -44,13 +44,10 @@ public class Supplier {
         actProducts += 1;
     }
 
-    public int getMaxProducts() {
-        return maxProducts;
-    }
     public void createIndexForProducts() {
         for (int i = 0; i < products.size(); i += 1) {
             Product product = products.get(i);
-            productsMap.put(product.getName(), i);
+            productsMap.put(product.name(), i);
         }
     }
 

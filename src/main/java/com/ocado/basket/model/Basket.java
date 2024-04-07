@@ -41,7 +41,7 @@ public class Basket {
         int productMapIterator = 0;
         int deliveryMapIterator = 0;
 
-        for (String productName : items) {  // O(n^2)
+        for (String productName : items) {
             if (!productsMap.containsKey(productName)) {
                 productsMap.put(productName, productMapIterator);
                 productMapIterator += 1;
@@ -118,7 +118,7 @@ public class Basket {
                 List<String> productNameList = new ArrayList<>();
                 for (Product product : supplier.getProducts()) {
                     if (product != null) {
-                        productNameList.add(product.getName());
+                        productNameList.add(product.name());
                     }
                 }
                 result.put(supplier.getName(), productNameList);
